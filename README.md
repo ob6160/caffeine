@@ -13,4 +13,4 @@ You'll need a Monzo access token and your account id. Find them here: https://de
 
 ## Usage
 
-`$ ./caffeine.sh ${access_token} ${account_id}`
+`$ MONZO_TOKEN=xxx MONZO_ACCOUNT_ID=xxx ./caffeine.sh`
