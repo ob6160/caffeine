@@ -3,8 +3,7 @@
 access_token=$1
 account_id=$2
 
-
-caffeine_sources="\"nero\",\"cafe\",\"costa\",\"pret\",\"starbucks\",\"amt\",\"coffee\""
+caffeine_sources='"nero","cafe","costa","pret","starbucks","amt","coffee"'
 
 first_of_month=$(date +%Y-%m-%dT00:00:00Z -d "`date +%Y%m01`")
 
