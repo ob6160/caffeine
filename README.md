@@ -8,6 +8,8 @@ You'll need a Monzo access token and your account id. Find them here: https://de
 ## Deps
 * jq - https://stedolan.github.io/jq/
 * bc - (B)asic (C)alculator
+* curl
+* sed
 
 ## Usage
 
