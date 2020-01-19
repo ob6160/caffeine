@@ -1,6 +1,6 @@
 #!/bin/bash
 
-caffeine_sources='"nero","cafe","costa","pret","starbucks","amt","coffee"'
+caffeine_sources='"nero","cafe","costa","pret","starbucks","amt","coffee","café"'
 
 first_of_month=$(date +%Y-%m-%dT00:00:00Z -d "`date +%Y%m01`")
 
