@@ -1,5 +1,11 @@
 #!/bin/bash
 
+caffeine_sources='"nero","cafe","costa","pret","starbucks","amt","coffee","café"'
+first_of_month=$(date -v1d -v"$(date '+%m')"m '+%Y-%m-%dT00:00:00Z') 
+echo $first_of_month
+
+## Starling ##
+
 api_root="https://api.starlingbank.com"
 auth="Authorization: Bearer $STARLING_TOKEN"
 
@@ -14,9 +20,10 @@ category_uid=$(echo $account_details | jq -r '.category')
 echo $account_uid $category_uid
 
 transactions_query=""
-transactions=$(curl -s -H "$auth" "$api_root/api/v2/feed/account/$account_uid/category/{$category_uid}?changesSince=2020-01-01T12:34:56.000Z")
-
+transactions=$(curl -s -H "$auth" "$api_root/api/v2/feed/account/$account_uid/category/{$category_uid}?changesSince=$first_of_month")
 echo $transactions
+
+#echo $transactions
 
 #caffeine_sources='"nero","cafe","costa","pret","starbucks","amt","coffee","café"'
 #
