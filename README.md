@@ -32,4 +32,5 @@ Generate one by signing up here: https://developer.starlingbank.com/personal/lis
 You are able to view past months by setting the `OFFSET_MONTHS` flag to the number of months you want to check in the past.
 
 As an example, if you're in October and you want to check your spend in August, pass **2** to this flag.
+
 `$ STARLING_TOKEN=xxx OFFSET_MONTHS=2 ./caffeine.sh`
