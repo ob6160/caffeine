@@ -6,7 +6,7 @@ set -a
 set +a
 
 # All known caffeine sources, contributions welcome! (Very UK oriented)
-caffeine_sources='"nero","cafe","costa","pret","starbucks","amt","coffee","café","patisseri","patisserie"'
+caffeine_sources='"nero","cafe","costa","pret","starbucks","amt","coffee","café","patisseri","patisserie","expresso","espresso","yellow warbler","215 hackney","gails","greggs","leon","the good egg","roasters","pure food"'
 
 if [ -n "$OFFSET_MONTHS" ]; then
     offset_months=$OFFSET_MONTHS
@@ -49,9 +49,14 @@ fi
 
 # Calculate the total caffeine spend
 amounts=$(echo $transaction_details | jq 'select(.desc | ascii_downcase | contains('"$caffeine_sources"')) | .amount')
+
+if [ "$amounts" == "" ]; then
+  echo "Congrats, looks like you didn't spend any money on coffee in $month_name $year_name, good work!"
+  exit 0
+fi
+
 sum_transactions=$(echo $amounts | sed 's/ /+/g' | bc | sed 's/-//g')
 scaled_sum=$(echo "scale = 2; $sum_transactions / 100" | bc)
-
 
 if [ "$offset_months" == 0 ]; then
     feedback_string="Awake? You should be - you've spent £$scaled_sum on caffeine so far in $month_name ☕😅."
