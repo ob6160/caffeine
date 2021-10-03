@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# Read dot env
+set -a
+[ -f .env ] && . .env
+set +a
+
 # All known caffeine sources, contributions welcome! (Very UK oriented)
 caffeine_sources='"nero","cafe","costa","pret","starbucks","amt","coffee","café","patisseri","patisserie"'
 
@@ -36,6 +41,8 @@ elif [ -n "$MONZO_TOKEN" ]; then
     auth="Authorization: Bearer $MONZO_TOKEN"
     transactions=$(curl -s -H "$auth" "$api_root/transactions?account_id=$MONZO_ACCOUNT_ID&since=$first_of_month")
     transaction_details=$(echo $transactions | jq ".[] | .[] | {desc: .description, amount: .amount}")
+else
+    echo "Neither STARLING_TOKEN or MONZO_TOKEN environment variables are set. Please refer to the readme for instructions about how to set these! Have a great day ☀️"
 fi
 
 # Calculate the total caffeine spend
