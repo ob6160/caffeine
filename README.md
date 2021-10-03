@@ -9,7 +9,7 @@ Monzo and Starling are supported currently.
 You'll need a Monzo access token and your account id. Find them here: https://developers.monzo.com/api/playground
 
 ## Starling setup
-You'll need a Starling access token, your account info can be fetched using it.
+You'll need a Starling access token, your account info is automatically fetched using it.
 Generate one by signing up here: https://developer.starlingbank.com/personal/list
 
 (I think) you'll need the following scopes: `account:read, account-identifier:read, payee-transaction:read, transaction:read`
@@ -32,4 +32,5 @@ Generate one by signing up here: https://developer.starlingbank.com/personal/lis
 You are able to view past months by setting the `OFFSET_MONTHS` flag to the number of months you want to check in the past.
 
 As an example, if you're in October and you want to check your spend in August, pass **2** to this flag.
+
 `$ STARLING_TOKEN=xxx OFFSET_MONTHS=2 ./caffeine.sh`
