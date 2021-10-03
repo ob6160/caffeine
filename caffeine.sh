@@ -9,13 +9,14 @@ else
 fi
 
 if [ "$(uname)" == "Darwin" ]; then
-    first_of_month=$(date -v1d -v"$(date '+%m')"m '+%Y-%m-%dT00:00:00Z') 
+    first_of_month=$(date -v1d -v"$(date '+%m')"m -v"-${offset_months}m" '+%Y-%m-%dT00:00:00Z')
+    month_name=$(date -j -f %Y-%m-%dT00:00:00Z $first_of_month +%B)
+    year_name=$(date -j -f %Y-%m-%dT00:00:00Z $first_of_month +%Y)
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     first_of_month=$(date +%Y-%m-%dT00:00:00Z -d "`date +%Y%m01` - ${offset_months} month")
+    month_name=$(date -d $first_of_month +%B)
+    year_name=$(date -d $first_of_month +%Y)
 fi
-
-month_name=$(date -d $first_of_month +%B)
-year_name=$(date -d $first_of_month +%Y)
 
 ## Starling ##
 if [ -n "$STARLING_TOKEN" ]; then
@@ -35,8 +36,8 @@ if [ -n "$STARLING_TOKEN" ]; then
     transactions_query=".[] | .[] | {desc: .counterPartyName, amount: .amount.minorUnits}"
     transaction_details=$(echo $transactions | jq "$transactions_query")
 
-    amounts_query='select(.desc | ascii_downcase | contains('"$caffeine_sources"')) | .amount'
-    amounts=$(echo $transaction_details | jq "$amounts_query")
+    amounts_query='select(.desc | ascii_downcase | contains('"$caffeine_sources"'))'
+    amounts=$(echo $transaction_details | jq "$amounts_query | .amount")
 
     sum_transactions=$(echo $amounts | sed 's/ /+/g' | bc | sed 's/-//g')
     scaled_sum=$(echo "scale = 2; $sum_transactions / 100" | bc)
