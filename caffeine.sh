@@ -20,8 +20,8 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     year_name=$(date -d $first_of_month +%Y)
 fi
 
-## Starling ##
 if [ -n "$STARLING_TOKEN" ]; then
+    ## Starling ##
     api_root="https://api.starlingbank.com"
     auth="Authorization: Bearer $STARLING_TOKEN"
     accounts=$(curl -s -H "$auth" "$api_root/api/v2/accounts")
@@ -29,14 +29,13 @@ if [ -n "$STARLING_TOKEN" ]; then
     account_uid=$(echo $account_details | jq -r '.uid')
     category_uid=$(echo $account_details | jq -r '.category')
     transactions=$(curl -s -H "$auth" "$api_root/api/v2/feed/account/$account_uid/category/{$category_uid}?changesSince=$first_of_month")
-
     transaction_details=$(echo $transactions | jq ".[] | .[] | {desc: .counterPartyName, amount: .amount.minorUnits}")
 elif [ -n "$MONZO_TOKEN" ]; then
+    ## Monzo ##
     api_root="https://api.monzo.com"
     auth="Authorization: Bearer $MONZO_TOKEN"
     transactions=$(curl -s -H "$auth" "$api_root/transactions?account_id=$MONZO_ACCOUNT_ID&since=$first_of_month")
     transaction_details=$(echo $transactions | jq ".[] | .[] | {desc: .description, amount: .amount}")
-
 fi
 
 # Calculate the total caffeine spend
