@@ -17,6 +17,7 @@ fi
 # MacOS and GNU date utils handle date formatting really differently :(
 if [ "$(uname)" == "Darwin" ]; then
     first_of_month=$(date -v1d -v"$(date '+%m')"m -v"-${offset_months}m" '+%Y-%m-%dT00:00:00Z')
+    last_of_month=$(date  -v1d -v"$(date '+%m')"m -v"-${offset_months}m" -v'+1m' '+%Y-%m-%dT00:00:00Z')
     month_name=$(date -j -f %Y-%m-%dT00:00:00Z $first_of_month +%B)
     year_name=$(date -j -f %Y-%m-%dT00:00:00Z $first_of_month +%Y)
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
@@ -33,7 +34,7 @@ if [ -n "$STARLING_TOKEN" ]; then
     account_details=$(echo $accounts | jq ".accounts | .[0] | {uid: .accountUid, category: .defaultCategory}")
     account_uid=$(echo $account_details | jq -r '.uid')
     category_uid=$(echo $account_details | jq -r '.category')
-    transactions=$(curl -s -H "$auth" "$api_root/api/v2/feed/account/$account_uid/category/{$category_uid}?changesSince=$first_of_month")
+    transactions=$(curl -s -H "$auth" "$api_root/api/v2/feed/account/$account_uid/category/{$category_uid}/transactions-between?minTransactionTimestamp=$first_of_month&maxTransactionTimestamp=$last_of_month")
     transaction_details=$(echo $transactions | jq ".[] | .[] | {desc: .counterPartyName, amount: .amount.minorUnits}")
 elif [ -n "$MONZO_TOKEN" ]; then
     ## Monzo ##
