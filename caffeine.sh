@@ -22,6 +22,7 @@ if [ "$(uname)" == "Darwin" ]; then
     year_name=$(date -j -f %Y-%m-%dT00:00:00Z $first_of_month +%Y)
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
     first_of_month=$(date +%Y-%m-%dT00:00:00Z -d "`date +%Y%m01` - ${offset_months} month")
+    last_of_month=$(date +%Y-%m-%dT00:00:00Z -d "`date +%Y%m01` - ${offset_months} month + 1 month")
     month_name=$(date -d $first_of_month +%B)
     year_name=$(date -d $first_of_month +%Y)
 fi
@@ -40,7 +41,7 @@ elif [ -n "$MONZO_TOKEN" ]; then
     ## Monzo ##
     api_root="https://api.monzo.com"
     auth="Authorization: Bearer $MONZO_TOKEN"
-    transactions=$(curl -s -H "$auth" "$api_root/transactions?account_id=$MONZO_ACCOUNT_ID&since=$first_of_month")
+    transactions=$(curl -s -H "$auth" "$api_root/transactions?account_id=$MONZO_ACCOUNT_ID&since=$first_of_month&before=$last_of_month")
     transaction_details=$(echo $transactions | jq ".[] | .[] | {desc: .description, amount: .amount}")
 else
     echo "Neither STARLING_TOKEN or MONZO_TOKEN environment variables are set. Please refer to the readme for instructions about how to set these! Have a great day ☀️"
