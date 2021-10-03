@@ -9,7 +9,7 @@ Monzo and Starling are supported currently.
 You'll need a Monzo access token and your account id. Find them here: https://developers.monzo.com/api/playground
 
 ## Starling setup
-You'll need a Starling access token, your account info can be fetched using it.
+You'll need a Starling access token, your account info is automatically fetched using it.
 Generate one by signing up here: https://developer.starlingbank.com/personal/list
 
 (I think) you'll need the following scopes: `account:read, account-identifier:read, payee-transaction:read, transaction:read`
